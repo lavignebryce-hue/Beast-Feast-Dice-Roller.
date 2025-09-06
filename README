@@ -1,0 +1,7 @@
+# Beast Feast Dice Roller
+
+## About
+A companion app to the Beast Feast Daggerheart campaign setting for rolling.  Choose the number/type of dice to roll and it will roll them all, calculating the total representing the shared pool to regain health and stress.
+
+## Local Development
+This project is built using basic html and css, open the html file in your browser while developing locally

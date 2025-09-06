@@ -1,0 +1,157 @@
+body {
+  font-family: 'Trebuchet MS', sans-serif;
+  padding: 24px;
+  background: #1e1e2f;
+  color: #f5f5f5;
+}
+
+h1 {
+  color: #ffcc66;
+  text-shadow: 2px 2px #000;
+  display: flex;
+  margin-top: 0px;
+  gap: 8px;
+}
+
+.dice-container {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  row-gap: 12px;
+  column-gap: 24px;
+}
+
+.dice-label {
+  width: 100%;
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+.dice-input {
+  padding: 16px 0px;
+  border-radius: 8px;
+  border: 1px solid #555;
+  width: 100%;
+  text-align: center;
+  font-size: 20px;
+  font-weight: medium;
+}
+
+.dice-number {
+  font-size: 24px;
+  font-weight: bold;
+  width: 80px;
+}
+
+.roll-btn {
+  padding: 12px 16px;
+  margin-top: 16px;
+  background: #ff9966;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: bold;
+  font-size: 18px;
+}
+
+.roll-btn:hover {
+  background: #ffbb88;
+}
+
+table {
+  border-collapse: collapse;
+  margin-top: 24px;
+  margin-bottom: 24px;
+  background: #2c2c44;
+  width: 100%;
+}
+
+th, td {
+  border: 1px solid #444;
+  padding: 8px;
+  text-align: center;
+}
+
+th {
+  background: #3e3e5a;
+}
+
+tr {
+  opacity: 0;
+  transform: translateY(-10px);
+  animation: fadeIn 0.5s forwards;
+}
+
+.result-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.final-output {
+  margin-top: 0;
+  margin-bottom: 0;
+  font-size: 28px;
+  transform: scale(1);
+  animation: pulse 1.5s 3 ease-in-out;
+  width: fit-content;
+}
+
+@media screen and (max-width: 580px) {
+  h1 {
+    gap: 0;
+    font-size: 42px;
+    flex-direction: column;
+  }
+
+  .instructions {
+    font-size: 18px;
+  }
+
+  .dice-container {
+    grid-template-columns: repeat(1, 1fr);
+    column-gap: 12px;
+  }
+
+  .dice-input {
+    padding: 16px 0px;
+    font-size: 28px;
+    font-weight: medium;
+  }
+
+  .roll-btn {
+    width: 100%;
+    font-size: 20px;
+  }
+}
+
+@keyframes fadeIn {
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.shake {
+  animation: shakeAnim 0.5s ease;
+}
+
+@keyframes shakeAnim {
+  0% { transform: translateX(0); }
+  25% { transform: translateX(-5px); }
+  50% { transform: translateX(5px); }
+  75% { transform: translateX(-5px); }
+  100% { transform: translateX(0); }
+}
+
+@keyframes pulse {
+  0% {
+      transform: scale(1);
+  }
+
+  50% {
+      transform: scale(1.03);
+  }
+
+  100% {
+      transform: scale(1);
+  }
+}
