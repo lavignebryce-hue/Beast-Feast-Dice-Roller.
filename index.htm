@@ -1,130 +1,51 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>Beast Feast Dice Roller</title>
-<style>
-    body { font-family: 'Trebuchet MS', sans-serif; padding: 20px; background: #1e1e2f; color: #f5f5f5; }
-    h1 { color: #ffcc66; text-shadow: 2px 2px #000; }
-    label { margin-right: 15px; }
-    input[type="number"] { width: 60px; padding: 5px; margin: 2px; border-radius: 5px; border: 1px solid #555; }
-    button { padding: 8px 14px; margin-top: 10px; background: #ff9966; border: none; border-radius: 8px; cursor: pointer; font-weight: bold; }
-    button:hover { background: #ffbb88; }
-    table { border-collapse: collapse; margin-top: 15px; background: #2c2c44; width: 100%; }
-    th, td { border: 1px solid #444; padding: 8px; text-align: center; }
-    th { background: #3e3e5a; }
-    tr { opacity: 0; transform: translateY(-10px); animation: fadeIn 0.5s forwards; }
-    @keyframes fadeIn {
-        to { opacity: 1; transform: translateY(0); }
-    }
-    .shake {
-        animation: shakeAnim 0.5s ease;
-    }
-    @keyframes shakeAnim {
-        0% { transform: translateX(0); }
-        25% { transform: translateX(-5px); }
-        50% { transform: translateX(5px); }
-        75% { transform: translateX(-5px); }
-        100% { transform: translateX(0); }
-    }
-</style>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>👨‍🍳</text></svg>">
+  <title>Beast Feast Dice Roller</title>
+  <link rel="stylesheet" href="style.css">
 </head>
+
 <body>
+  <h1>
+    <span>🎲</span>
+    <span>Beast Feast Dice Roller</span>
+  </h1>
+  <p class="instructions">Enter the number of dice for each type:</p>
 
-<h1>🎲 Beast Feast Dice Roller 🎲</h1>
-<p>Enter the number of dice for each type:</p>
+  <div class="dice-container">
+    <label class="dice-label">
+      <div class="dice-number">d4: </div>
+      <input class="dice-input" type="number" id="d4" min="0">
+    </label>
+    <label class="dice-label">
+      <div class="dice-number">d6: </div>
+      <input class="dice-input" type="number" id="d6" min="0">
+    </label>
+    <label class="dice-label">
+      <div class="dice-number">d8: </div>
+      <input class="dice-input" type="number" id="d8" min="0">
+    </label>
+    <label class="dice-label">
+      <div class="dice-number">d10: </div>
+      <input class="dice-input" type="number" id="d10" min="0">
+    </label>
+    <label class="dice-label">
+      <div class="dice-number">d12: </div>
+      <input class="dice-input" type="number" id="d12" min="0">
+    </label>
+    <label class="dice-label">
+      <div class="dice-number">d20: </div>
+      <input class="dice-input" type="number" id="d20" min="0">
+    </label>
+  </div>
 
-<div>
-    <label>d4: <input type="number" id="d4" min="0" value="0"></label>
-    <label>d6: <input type="number" id="d6" min="0" value="0"></label>
-    <label>d8: <input type="number" id="d8" min="0" value="0"></label>
-    <label>d10: <input type="number" id="d10" min="0" value="0"></label>
-    <label>d12: <input type="number" id="d12" min="0" value="0"></label>
-    <label>d20: <input type="number" id="d20" min="0" value="0"></label>
-</div>
+  <button class="roll-btn" onclick="startRolling()">Roll Dice</button>
 
-<button onclick="startRolling()">Roll Dice</button>
+  <div id="output"></div>
 
-<div id="output"></div>
-
-<script>
-function rollDie(sides) {
-    return Math.floor(Math.random() * sides) + 1;
-}
-
-function buildDiceList() {
-    let dice = [];
-    const sidesList = [4, 6, 8, 10, 12, 20];
-    sidesList.forEach(sides => {
-        let count = parseInt(document.getElementById(`d${sides}`).value) || 0;
-        for (let i = 0; i < count; i++) {
-            dice.push(sides);
-        }
-    });
-    return dice;
-}
-
-function startRolling() {
-    let diceSides = buildDiceList();
-    if (!diceSides.length) {
-        document.getElementById('output').innerHTML = "<p>Please enter some dice.</p>";
-        return;
-    }
-
-    let dicePool = diceSides.map(s => rollDie(s));
-    let mealRating = 0;
-    let roundNumber = 1;
-    let results = [];
-
-    function delay(ms) { return new Promise(resolve => setTimeout(resolve, ms)); }
-
-    async function rollSequence() {
-        document.getElementById('output').innerHTML = "";
-        while (dicePool.length >= 2) {
-            let table = document.querySelector("table");
-            let counts = {};
-            for (let die of dicePool) counts[die] = (counts[die] || 0) + 1;
-            let pairs = Object.keys(counts).filter(v => counts[v] >= 2).map(Number);
-
-            // Dice shake before result
-            document.body.classList.add("shake");
-            await delay(400);
-            document.body.classList.remove("shake");
-
-            if (pairs.length) {
-                let highestPair = Math.max(...pairs);
-                mealRating += highestPair;
-                results.push([roundNumber, `Pair of ${highestPair}'s`, `+${highestPair}`, [...dicePool]]);
-                let removed = 0;
-                dicePool = dicePool.filter(die => {
-                    if (die === highestPair && removed < 2) { removed++; return false; }
-                    return true;
-                });
-            } else {
-                let lowest = Math.min(...dicePool);
-                results.push([roundNumber, `Dropped ${lowest}`, "+0", [...dicePool]]);
-                dicePool.splice(dicePool.indexOf(lowest), 1);
-            }
-
-            dicePool = dicePool.map((_, i) => rollDie(diceSides[i]));
-            roundNumber++;
-        }
-
-        let tableHTML = "<table><tr><th>Round</th><th>Action</th><th>Meal Rating Gain</th><th>Dice Pool</th></tr>";
-        for (let row of results) {
-            tableHTML += `<tr>
-                <td>${row[0]}</td>
-                <td>${row[1]}</td>
-                <td>${row[2]}</td>
-                <td>${row[3].join(", ")}</td>
-            </tr>`;
-        }
-        tableHTML += `</table><p><strong>Final Meal Rating:</strong> ${mealRating}</p>`;
-        document.getElementById('output').innerHTML = tableHTML;
-    }
-
-    rollSequence();
-}
-</script>
+  <script src="rollDice.js"></script>
 
 </body>
 </html>
