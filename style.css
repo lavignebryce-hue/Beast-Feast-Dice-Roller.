@@ -155,3 +155,65 @@ tr {
       transform: scale(1);
   }
 }
+
+#animation {
+  position: absolute;
+  z-index: 9999;
+  left: 0;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0,0,0,0.8);
+}
+
+.hidden {
+  display: none;
+}
+
+@keyframes flip {
+  0% {
+    transform: rotate(0);
+  }
+  33% {
+    transform: rotate(-15deg);
+  }
+  66% {
+    transform: rotate(15deg);
+  }
+  100% {
+    transform: rotate(0);
+  }
+}
+
+.flip {
+  animation: flip 0.5s linear;
+}
+
+#pan {
+  transform-origin: 100px 10px;
+}
+
+.die {
+  filter: drop-shadow( 0px 0px 5px rgba(0, 0, 0, .7));
+}
+
+@keyframes jump {
+  0% {
+    transform: translateY(-15px) rotate(0deg);
+  }
+  25% {
+    transform: translateY(-80px) rotate(90deg);
+  }
+  50% {
+    transform: translateY(-100px) rotate(180deg);
+  }
+  75% {
+    transform: translateY(-80px) rotate(270deg);
+  }
+  100% {
+    transform: translateY(0) rotate(360deg);
+  }
+}
+.jump {
+  animation: jump 0.7s linear;
+}

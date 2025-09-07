@@ -31,7 +31,7 @@ function findMinimum(arr) {
   return minValue;
 }
 
-function startRolling() {
+async function startRolling() {
   // collect all the dice to be rolled
   const diceSides = buildDiceList();
 
@@ -48,6 +48,7 @@ function startRolling() {
   async function rollSequence() {
     // clear the output for the new result
     document.getElementById('output').innerHTML = "";
+    showPan();
 
     // while more than a single dice in the pool remains, keep rolling
     while (dicePool.length >= 2) {
@@ -80,10 +81,11 @@ function startRolling() {
       console.log('******* Pairs:', pairs);
 
       // dice shake before result
-      document.body.classList.add("shake");
-      await delay(400);
-      document.body.classList.remove("shake");
-      await delay(400);
+      await flip(dicePool);
+      // document.body.classList.add("shake");
+      // await delay(400);
+      // document.body.classList.remove("shake");
+      // await delay(400);
 
       // if pairs were found, add them to the total and remove those dice from the dice pool
       if (pairs.length > 0) {
@@ -140,5 +142,6 @@ function startRolling() {
     document.getElementById('result').scrollIntoView({ behavior: "smooth", block: "start" })
   }
 
-  rollSequence();
+  await rollSequence();
+  hidePan();
 }
